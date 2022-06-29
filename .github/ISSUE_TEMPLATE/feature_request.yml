@@ -1,0 +1,37 @@
+name: Feature request
+description: Request new update or new command
+labels: [feature request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search if your feature is already demanded in case don't post this
+  - type: dropdown
+    id: package
+    attributes:
+      label: Which section we need to add the feature?
+      options:
+        - commands
+        - moderation
+        - dashboard
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Ideal solution or implementation
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative solutions or implementations
+      description: A clear and concise description of any alternative solutions or features you have considered.
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Other context
+      description: Any other context, screenshots, or file uploads that help us understand your feature request.
+
