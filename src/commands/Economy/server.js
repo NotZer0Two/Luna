@@ -56,7 +56,7 @@ module.exports = {
 
     let choice = args[0]
 
-    if(!choice) return message.channel.send({ content: `❌ You need to specify an item to buy!`})
+    if(!choice) return message.channel.send({ content: `❌ Please select Status or Console!`})
 
     if(choice === "Status") {
         //check if the guildraw.ServerWar.offline is true or false if its true https://i.imgur.com/MJJBNuH.png use this one or else https://i.imgur.com/Q76leyS.png
