@@ -9,20 +9,14 @@ const {
 } = require('discord.js');
 const User = require('../database/schemas/User');
 const Canvas = require('canvas');
-<<<<<<< HEAD
-=======
 const { createTranscript } = require("discord-html-transcripts")
 const {loadbuttons} = require("../helpers/loadbuttons");
->>>>>>> Massive Update
 
 
 try {
   client.on('interactionCreate', async (interaction) => {
-<<<<<<< HEAD
-=======
     if(interaction.isButton()) loadbuttons(client, interaction, client.buttonCommands.get(interaction.customId));
 
->>>>>>> Massive Update
     if (interaction.customId === 'yeswallet') {
       const updatedEmbed = new MessageEmbed(
         interaction.message.embeds[0],
@@ -60,8 +54,6 @@ try {
       });
     }
 
-<<<<<<< HEAD
-=======
     if (interaction.customId === "ticket-open") {
       await interaction.deferReply({ ephemeral: true }) 
       if(interaction.guild.channels.cache.find(e => e.topic == interaction.user.id)) {
@@ -226,7 +218,6 @@ setTimeout(() => {
       }
   }
 
->>>>>>> Massive Update
     if (interaction.isModalSubmit()) {
 
       const input = interaction.fields.getTextInputValue('wordleWord');

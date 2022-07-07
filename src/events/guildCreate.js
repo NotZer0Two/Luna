@@ -27,11 +27,7 @@ try {
     '',
     '    🌐 **Help & Support**',
     `• **[Status](${process.env.DOMAIN}/status)**`,
-<<<<<<< HEAD
-    `• **[Support Server](https://discord.gg/wQ9cKHwZ86)**`,
-=======
     `• **[Support Server](https://discord.gg/7MEZZHD6Wh)**`,
->>>>>>> Massive Update
     `• **[Contact us](${process.env.DOMAIN}/contact)**`,
     '',
     '',
@@ -47,11 +43,7 @@ try {
     '',
     '',
     '**I hope i am your favorite goddess**',
-<<<<<<< HEAD
-    ]);
-=======
     ].join("\n"));
->>>>>>> Massive Update
 
     // Send the Embed the Guild Owner, send a log notification to the Bot Admins.
     guild.owner.send(embed).catch(() => {})

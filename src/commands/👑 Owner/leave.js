@@ -3,11 +3,7 @@ const rgx = /^(?:<@!?)?(\d+)>?$/;
 
 module.exports = {
   name: "leave",
-<<<<<<< HEAD
-  description: "Display the Users avatar",
-=======
   description: "Leave a guild",
->>>>>>> Massive Update
   category: "Admin",
   ownerOnly: true,
   /**

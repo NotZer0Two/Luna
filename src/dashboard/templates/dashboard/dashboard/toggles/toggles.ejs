@@ -158,13 +158,8 @@
                     class="togglesInput"
                   >
                     <% if(guild.channels.cache.size) { %> <%
-<<<<<<< HEAD
-                    guild.channels.cache.filter((ch) => ch.type === "text" &&
-                    ch.viewable).forEach((ch) => { %> <%
-=======
                     guild.channels.cache.filter((ch) => ch.type === "GUILD_TEXT" &&
                     ch.viewable).map((ch) => { %> <%
->>>>>>> Massive Update
                     if(settings.disabledChannels.includes(ch.id)) { %>
                     <option value="<%= ch.id %>" selected
                       ># <%= ch.name %></option

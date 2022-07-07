@@ -5,11 +5,7 @@ const market = require('../../database/market/market.json');
 module.exports = {
   name: 'daily',
   category: 'Economy',
-<<<<<<< HEAD
-  description: "Register a wallet to get money",
-=======
   description: "Get the daily reward",
->>>>>>> Massive Update
   aliases: ['dreward'],
 
   /**

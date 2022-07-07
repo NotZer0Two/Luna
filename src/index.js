@@ -40,14 +40,6 @@ client.commands = new Collection()
 client.prefix = process.env.PREFIX
 client.aliases = new Collection()
 client.guildSettings = new Collection()
-<<<<<<< HEAD
-client.userSettings = new Collection()
-client.stafflogs = new WebhookClient({ url: process.env.STAFFERLOGS });
-client.modlogs = async function({ MemberTag, MemberID, MemberDisplayURL, Action, Color, Reason, ModeratorTag, ModeratorID, ModeratorDisplayURL}, interaction) {
-  const data = await Guild.findOne({ Id: interaction.guild.id }); 
-  if(!data) return;
-  if(!data.feature.Modlogs.channel || !data.feature.Modlogs.webhook) return;
-=======
 client.buttonCommands = new Collection();
 client.userSettings = new Collection()
 client.stafflogs = new WebhookClient({ url: process.env.STAFFERLOGS });
@@ -55,7 +47,6 @@ client.modlogs = async function({ MemberTag, MemberID, MemberDisplayURL, Action,
   const data = await Guild.findOne({ Id: interaction.guild.id }); 
   if(!data) return;
   if(!data.feature.Modlogs.channel || data.feature.Modlogs.enable === false) return;
->>>>>>> Massive Update
  
   const channel = interaction.guild.channels.cache.get(data.feature.Modlogs.channel);
 
@@ -68,9 +59,6 @@ client.modlogs = async function({ MemberTag, MemberID, MemberDisplayURL, Action,
   .setAuthor({name: `${ModeratorTag} (${ModeratorID})`, iconURL: `${ModeratorDisplayURL}`})
   .setTimestamp()
 
-<<<<<<< HEAD
-  channel.send({ embeds: [logsembed] });
-=======
 
   //check if attachment is empty or not
   if(Attachments) {
@@ -78,7 +66,6 @@ client.modlogs = async function({ MemberTag, MemberID, MemberDisplayURL, Action,
   } else {
     const display = await channel.send({ embeds: [logsembed] }).catch(err => console.log(err));
   }
->>>>>>> Massive Update
 }
 
 // load the Command and Handlers for the Bot, commands not in these paths, won't work.
@@ -87,14 +74,11 @@ client.categories = fs.readdirSync(path.resolve('src/commands'))
   require(path.resolve(`src/handlers/${handler}`))(client)
 })
 
-<<<<<<< HEAD
-=======
 //Same as the upper one
 ;['buttons'].forEach(handler => {
   require(path.resolve(`src/handlers/${handler}`))(client)
 })
 
->>>>>>> Massive Update
 // Init the Database and login the Bot
 mongoose.init()
 client.login(process.env.TOKEN)

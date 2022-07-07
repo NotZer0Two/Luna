@@ -4,11 +4,7 @@ const Bot = require("../../database/schemas/Bot")
 module.exports = {
   name: 'alert',
   category: 'secret',
-<<<<<<< HEAD
-  description: 'Let you add staffer to luna bot',
-=======
   description: 'Let you make an alert for all the user',
->>>>>>> Massive Update
   ownerOnly: true,
   /**
    * @param {Client} client

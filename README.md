@@ -30,11 +30,7 @@ Features:
 * Change the Nickname of Luna.
 * View the Leaderboard.
 * Hide yourself from the Leaderboard.
-<<<<<<< HEAD
-* Minigames and more other fun activity
-=======
 * View your enrolled Courses (with exact timestamp).
->>>>>>> Massive Update
 * View your premium subscription (with exact timestamp).
 
 and much more!
