@@ -7,11 +7,7 @@ const moment = require('moment');
 module.exports = {
   name: 'hypixel',
   category: 'ℹ️ Information',
-<<<<<<< HEAD
-  description: 'Returns latency and API ping',
-=======
   description: 'Get information and utility for hypixel server',
->>>>>>> Massive Update
 
   run: async (client, message, args, user, guild) => {
     let choice = ["flip", "history"]
