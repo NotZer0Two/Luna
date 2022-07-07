@@ -1,8 +1,11 @@
 node_modules
 config.json
 test.js
+<<<<<<< HEAD
 package.json
 package-lock.json
+=======
+>>>>>>> Massive Update
 idea
 Cody.iml
 discord.xml

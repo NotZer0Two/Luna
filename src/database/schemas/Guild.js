@@ -27,9 +27,22 @@ const guild = mongoose.Schema({
   },
   feature: {
     Automod: { type: mongoose.SchemaTypes.Boolean, default: false },
+<<<<<<< HEAD
     Modlogs: { 
       enable: { type: mongoose.SchemaTypes.Boolean, default: false },
       channel: { type: mongoose.SchemaTypes.String, default: null },
+=======
+    Automod_score: { type: mongoose.SchemaTypes.Number, default: 0.5 },
+    Modlogs: { 
+      enable: { type: mongoose.SchemaTypes.Boolean, default: false },
+      channel: { type: mongoose.SchemaTypes.String, default: null },
+    },
+    welcome: { 
+      enable: { type: mongoose.SchemaTypes.Boolean, default: false },
+      channel: { type: mongoose.SchemaTypes.String, default: null },
+      type: { type: mongoose.SchemaTypes.String, default: null },
+      message: { type: mongoose.SchemaTypes.String, default: null },
+>>>>>>> Massive Update
     }
   },
   ServerWar: {

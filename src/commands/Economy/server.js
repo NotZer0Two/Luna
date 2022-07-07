@@ -5,7 +5,11 @@ const Canvas = require('canvas')
 module.exports = {
   name: 'server',
   category: 'Economy',
+<<<<<<< HEAD
   description: "Buy an item from the market",
+=======
+  description: "Get access to the server room",
+>>>>>>> Massive Update
   customPermission: "Guild_Server",
   aliases: [],
 
@@ -56,7 +60,11 @@ module.exports = {
 
     let choice = args[0]
 
+<<<<<<< HEAD
     if(!choice) return message.channel.send({ content: `❌ Please select Status or Console!`})
+=======
+    if(!choice) return message.channel.send({ content: `❌ You need to specify an item to buy!`})
+>>>>>>> Massive Update
 
     if(choice === "Status") {
         //check if the guildraw.ServerWar.offline is true or false if its true https://i.imgur.com/MJJBNuH.png use this one or else https://i.imgur.com/Q76leyS.png

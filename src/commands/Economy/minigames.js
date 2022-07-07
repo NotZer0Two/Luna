@@ -18,7 +18,11 @@ const games = jsfiles.map(x => {
 module.exports = {
   name: 'minigames',
   category: 'Economy',
+<<<<<<< HEAD
   description: "Register a bank account to transfer money from it",
+=======
+  description: "play some minigame",
+>>>>>>> Massive Update
   cooldown: 1000,
   aliases: ["minigame"],
 

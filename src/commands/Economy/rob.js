@@ -6,7 +6,11 @@ let FailCrime = ["You tried to rob some random guy but he was too fast and you g
 module.exports = {
   name: 'rob',
   category: 'Economy',
+<<<<<<< HEAD
   description: "Sell the item on your inventory",
+=======
+  description: "Rob a user or rob some random guy",
+>>>>>>> Massive Update
   aliases: [],
 
   /**

@@ -58,12 +58,23 @@ module.exports = {
       );
     }
 
+<<<<<<< HEAD
+=======
+
+    /*Fixing the issues for the double commands and crash*/
+    const random = Math.floor(Math.random() * 300) + 1;
+
+
+>>>>>>> Massive Update
     const embed = new Discord.MessageEmbed()
       .setTitle('📬 Setup Moderation Commands')
       .setColor('#a1131d')
       .setDescription(`Welcome to the Setup Command!`)
+<<<<<<< HEAD
       //for eache feature and make in small the text after |
       .addField('Automod', "Ai moderation")
+=======
+>>>>>>> Massive Update
       .setFooter(`Requested by ${message.author.tag}`)
       .setTimestamp();
 
@@ -75,16 +86,38 @@ module.exports = {
         .setStyle(guildraw.feature.Automod ? 'SUCCESS' : 'DANGER')
         .setEmoji('🤬'),
 
+<<<<<<< HEAD
         new Discord.MessageButton()
+=======
+      new Discord.MessageButton()
+>>>>>>> Massive Update
         .setCustomId('modlogs')
         .setLabel('ModLogs')
         //check if the automod is enabled or not and set the color
         .setStyle(guildraw.feature.Modlogs.enable ? 'SUCCESS' : 'DANGER')
         .setEmoji('📝'),
+<<<<<<< HEAD
+=======
+
+      new Discord.MessageButton()
+        .setCustomId('ticket')
+        .setLabel('Ticket')
+        //check if the automod is enabled or not and set the color
+        .setStyle("SECONDARY")
+        .setEmoji('🎫'),
+
+      new Discord.MessageButton()
+        .setCustomId('welcome')
+        .setLabel('Welcome')
+        //check if the automod is enabled or not and set the color
+        .setStyle(guildraw.feature.welcome.enable ? 'SUCCESS' : 'DANGER')
+        .setEmoji('🎉'),
+>>>>>>> Massive Update
     );
 
     const filter = (i) => i.user.id === message.author.id;
 
+<<<<<<< HEAD
     const collector = message.channel.createMessageComponentCollector({
       filter, time: 30000 
     });
@@ -188,3 +221,8 @@ module.exports = {
     })
   },
 };
+=======
+    let displaymessage = await message.channel.send({ embeds: [embed], components: [row] });
+  },
+}
+>>>>>>> Massive Update

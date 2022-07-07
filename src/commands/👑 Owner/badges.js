@@ -3,7 +3,11 @@ const User = require('../../database/schemas/User')
 module.exports = {
   name: 'badges',
   category: '👑 Owner',
+<<<<<<< HEAD
   description: 'Generates a premium code',
+=======
+  description: 'Give a badge to users',
+>>>>>>> Massive Update
   ownerOnly: true,
 
   run: async (client, message, args, user, guild) => {

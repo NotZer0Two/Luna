@@ -5,7 +5,11 @@ const Discord = require('discord.js');
 module.exports = {
   name: 'partnersetup',
   category: 'moderation',
+<<<<<<< HEAD
   description: 'Moderation Commands',
+=======
+  description: 'Setup Partner for your server (ONLY PARTNER WITH BADGE)',
+>>>>>>> Massive Update
   aliases: [],
 
   /**
