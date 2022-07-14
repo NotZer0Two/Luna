@@ -10,6 +10,8 @@ client.on('guildMemberAdd', async member => {
   })
 
   if(guildraw.feature.welcome.enable == false || !guildraw.feature.welcome.enable) return;
+  //Fixing the welcome bug spam for not setting up things
+  if(guildraw.feature.welcome.type == null || !guildraw.feature.welcome.type) return;
 
   if(guildraw.feature.welcome.type === "PaperPlease") {
     Canvas.registerFont("./src/assets/font/PaperPlease.TTF", { family: 'PaperPlease' })

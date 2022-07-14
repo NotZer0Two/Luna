@@ -12,7 +12,7 @@ module.exports = {
    * @param {String[]} args
    */
   run: async (client, message, args) => {
-    const Permission = new CustomPermission(client.config.SUPPORTSERVERID, message.author.id)
+    const Permission = new CustomPermission(process.env.SUPPORTSERVERID, message.author.id)
 
     const member = message.mentions.members.first()
     if (!member) return message.channel.send(`> **You need to ping a user!**`)

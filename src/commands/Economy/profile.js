@@ -56,7 +56,7 @@ module.exports = {
       })
 
     //permission handler to check if the user has the permission to use this command
-    const permissionHandler = new PermissionHandler(client.config.SUPPORTSERVERID, message.member)
+    const permissionHandler = new PermissionHandler(process.env.SUPPORTSERVERID, message.member)
 
 
 
@@ -71,7 +71,7 @@ module.exports = {
       const defpattern = await loadImage(userProfile.profile.pattern || 'https://i.imgur.com/nx5qJUb.png' || 'https://i.imgur.com/bnLhXeW.jpg');
       const avatar = await loadImage(member.user.displayAvatarURL({format: 'png'}));
       const badge = Math.max(...userProfile.profile.badges);
-      const isStaffer = permissionHandler.checkPermission("Staffer") == true || client.config.DEVELOPERS.includes(member.id)
+      const isStaffer = permissionHandler.checkPermission("Staffer") == true || process.env.DEVELOPERS.includes(member.id)
       let badgeimage = ""
       if(badge === 0) badgeimage = "https://cdn3.emoji.gg/emojis/8859-discord-roles-from-vega.png"
       if(badge === 1) badgeimage = 'https://cdn3.emoji.gg/emojis/5444-beta-badge.png'
