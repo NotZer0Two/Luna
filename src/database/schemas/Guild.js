@@ -28,6 +28,7 @@ const guild = mongoose.Schema({
   feature: {
     Automod: { type: mongoose.SchemaTypes.Boolean, default: false },
     Automod_score: { type: mongoose.SchemaTypes.Number, default: 0.5 },
+    Language: { type: mongoose.SchemaTypes.String, default: "en" },
     Modlogs: { 
       enable: { type: mongoose.SchemaTypes.Boolean, default: false },
       channel: { type: mongoose.SchemaTypes.String, default: null },
@@ -37,7 +38,8 @@ const guild = mongoose.Schema({
       channel: { type: mongoose.SchemaTypes.String, default: null },
       type: { type: mongoose.SchemaTypes.String, default: null },
       message: { type: mongoose.SchemaTypes.String, default: null },
-    }
+    },
+    customcommand: { type: mongoose.SchemaTypes.Array, default: [0]}
   },
   ServerWar: {
     offline: { type: mongoose.SchemaTypes.Boolean, default: false },

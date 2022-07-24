@@ -6,6 +6,10 @@ module.exports = {
 
         const filter = (i) => i.user.id === interaction.user.id;
 
+        if(!interaction.member.permissions.has('MANAGE_GUILD')) {
+          return interaction.channel.send(await client.translate("> You don't have permission to use this command", interaction.guild.id));
+        }
+
         const guildraw = await Guild.findOne({
             Id: interaction.guild.id,
           });
@@ -22,7 +26,7 @@ module.exports = {
           } else {
             const collector2 = interaction.channel.createMessageCollector(filter, { time: 15000 });
   
-            interaction.channel.send("> Please enter a number for the automod score (we recommend 0.5)");
+            interaction.channel.send(await client.translate("> Please enter a number for the automod score (we recommend 0.5)", interaction.guild.id));
   
             collector2.on('collect', async (collecting) => {
               //check if the message is a number or not
@@ -35,7 +39,7 @@ module.exports = {
   
               const user = await client.users.fetch(interaction.user.id);
   
-              await guildraw.save().then(() => {
+              await guildraw.save().then(async () => {
                 client.modlogs({
                   MemberTag: user.tag,
                   MemberID: user.id,
@@ -47,8 +51,8 @@ module.exports = {
                   ModeratorID: client.user.id,
                   ModeratorDisplayURL: client.user.displayAvatarURL(),
                 }, interaction)
-  
-                interaction.channel.send("> Thanks for using our system you setup the score to " + score)
+                
+                interaction.channel.send({ content: `${await client.translate(`> Thanks for using our system you setup the score to ${score}`, interaction.guild.id)}`});
   
                 collector2.stop();
               });

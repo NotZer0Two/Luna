@@ -5,6 +5,11 @@ module.exports = {
     run : async(client, interaction, container) => {
       const filter = (i) => i.user.id === interaction.user.id;
 
+
+      if(!interaction.member.permissions.has('MANAGE_GUILD')) {
+        return interaction.channel.send(await client.translate("> You don't have permission to use this command", interaction.guild.id));
+      }
+
         const guildraw = await Guild.findOne({
           Id: interaction.guild.id,
         });
@@ -25,7 +30,7 @@ module.exports = {
           interaction.message.components[0].components[3].setStyle("SUCCESS")
           interaction.update({ components: interaction.message.components })
 
-          interaction.channel.send("> Please enter the channel you want to use as Welcome channel");
+          interaction.channel.send(await client.translate("> Please enter the channel you want to use as Welcome channel", interaction.guild.id));
   
           const collector2 = interaction.channel.createMessageCollector(filter, { time: 15000 });
   
@@ -40,7 +45,7 @@ module.exports = {
   
               guildraw.feature.welcome.channel = collecting.mentions.channels.first().id;
   
-              await guildraw.save().then(() => {
+              await guildraw.save().then(async () => {
                 client.modlogs({
                   MemberTag: user.tag,
                   MemberID: user.id,
@@ -53,7 +58,7 @@ module.exports = {
                   ModeratorDisplayURL: client.user.displayAvatarURL(),
                 }, collecting)
   
-                interaction.channel.send("> Enter the type of welcome message you want to use (PaperPlease, Message, Embed)");
+                interaction.channel.send({ content: `${await client.translate("> Enter the type of welcome message you want to use ", interaction.guild.id)}` + "(PaperPlease, Message, Embed)" });
                 const collector3 = interaction.channel.createMessageCollector(filter, { time: 15000 });
                 collector3.on('collect', async (collecting2) => {
                   if(collecting2.content == "PaperPlease") {
@@ -65,16 +70,16 @@ module.exports = {
                     collector3.stop();
                     collector2.stop();
 
-                    interaction.channel.send("> Thanks for using our system, your welcome message is in " + collecting.mentions.channels.first().name)
+                    interaction.channel.send(await client.translate("> Thanks for using our system, your welcome message is in " + collecting.mentions.channels.first().name, interaction.guild.id))
                   } else if(collecting2.content == "Message") {
-                    interaction.channel.send("> Enter the text you want use for the message join ({MentionJoined}, {FullNameJoined}, {UsernameJoined}, {JoinedID})")
+                    interaction.channel.send(await client.translate("> Enter the embed you want use for the message join ", interaction.guild.id) + "({MentionJoined}, {FullNameJoined}, {UsernameJoined}, {JoinedID}, {TotalMember}, {GuildName})");
                     guildraw.feature.welcome.type = "Message";
                     const collector4 = interaction.channel.createMessageCollector(filter, { time: 15000 });
                     collector4.on('collect', async (collecting4) => {
                       if(collecting4.author.bot) return;
                       guildraw.feature.welcome.message = collecting4.content;
                       await guildraw.save();
-                      interaction.channel.send("> Thanks for using our system, your welcome message is in " + collecting.mentions.channels.first().name)
+                      interaction.channel.send(await client.translate("> Thanks for using our system, your welcome message is in " + collecting.mentions.channels.first().name, interaction.guild.id))
                       collector4.stop();
                       collector3.stop();
                       collector2.stop();
@@ -82,17 +87,24 @@ module.exports = {
                     })
                   } else if(collecting2.content == "Embed") {
                     guildraw.feature.welcome.type = "Embed";
-                    interaction.channel.send("> Enter the embed you want use for the message join ({MentionJoined}, {FullNameJoined}, {UsernameJoined}, {JoinedID})");
+                    interaction.channel.send(await client.translate("> go here https://lunabot.gq/embed-builder and then when you done go in the 3 dots and click the url icon copy this message and send it here Placeholder: ", interaction.guild.id) + "({MentionJoined}, {FullNameJoined}, {UsernameJoined}, {JoinedID}, {TotalMember}, {GuildName})");
                     const collector4 = interaction.channel.createMessageCollector(filter, { time: 15000 });
                     collector4.on('collect', async (collecting4) => {
                       if(collecting4.author.bot) return;
-                      guildraw.feature.welcome.message = collecting4.content;
+                      //check if the message contains https://lunabot.gq/embed-builder
+                      if(collecting4.content.includes("https://lunabot.gq/embed-builder?data=")) {
+                        //remove the link and ?data=
+                        let embed = collecting4.content.replace("https://lunabot.gq/embed-builder?data=", "");
+
+                      guildraw.feature.welcome.message = embed;
                       await guildraw.save();
-                      interaction.channel.send("> Thanks for using our system, your welcome message is in " + collecting.mentions.channels.first().name)
+                      interaction.channel.send(await client.translate("> Thanks for using our system, your welcome message is in " + collecting.mentions.channels.first().name, interaction.guild.id))
                       collector4.stop();
                       collector3.stop();
                       collector2.stop();
-                      await guildraw.save()
+                    } else {
+                      interaction.channel.send(await client.translate("> Please enter a valid embed link", interaction.guild.id))
+                    }
                     })
                   }
                 })

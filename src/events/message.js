@@ -1,10 +1,12 @@
 const client = require('../index')
 const { Collection } = require('discord.js')
+const Discord = require("discord.js")
 const Timeout = new Collection()
 const ms = require('ms')
 const User = require('../database/schemas/User')
 const Guild = require('../database/schemas/Guild')
 const PermissionHandler = require('../permission_handler/CustomPermission')
+const LZString = require("../dashboard/static/js/embed-builder/compression/lz-string")
 
 client.on('messageCreate', async message => {
   if (message.author.bot) return
@@ -39,7 +41,39 @@ client.on('messageCreate', async message => {
 
   if (cmd.length == 0) return
   let command = client.commands.get(cmd)
-  if (!command) command = client.commands.get(client.aliases.get(cmd))
+
+  try {
+    guild.feature.customcommand.forEach(async element => {
+      if(element.Name == cmd) {
+        let embedraw = element.Text.replace("https://lunabot.gq/embed-builder?data=", "") || element.Text.replace("http://localhost:8000/embed-builder?data=", "")
+
+        const rawembedbase = LZString.decompressFromEncodedURIComponent(unescape(embedraw))
+  
+        //change inside the rawembedbase the descrption
+        const embedbase = JSON.parse(rawembedbase)
+        if(embedbase.embed) embedbase.embed.description = embedbase.embed.description.replace('{MentionJoined}', `<@${message.author.id}>`).replace('{FullNameJoined}', `${message.author.username}#${message.author.discriminator}`).replace('{UsernameJoined}', `${message.author.username}`).replace('{JoinedID}', `${message.author.id}`).replace('{TotalMember}', `${message.guild.memberCount}`).replace('{GuildName}', `${message.guild.name}`).replace('{args}', `${args[0] || 'No Arguments'}`)
+        if(embedbase.content) embedbase.content = embedbase.content.replace('{MentionJoined}', `<@${message.author.id}>`).replace('{FullNameJoined}', `${message.author.username}#${message.author.discriminator}`).replace('{UsernameJoined}', `${message.author.username}`).replace('{JoinedID}', `${message.author.id}`).replace('{TotalMember}', `${message.guild.memberCount}`).replace('{GuildName}', `${message.guild.name}`).replace('{args}', `${args.join(' ') || 'No Arguments'}`)
+
+        const row = new Discord.MessageActionRow().addComponents(
+          new Discord.MessageButton()
+            .setCustomId('buttonclosed')
+            
+            .setLabel(await client.translate("Made by " + element.Creator, message.guild.id))
+            .setDisabled(true)
+            .setStyle("SECONDARY")
+        )
+  
+        if(embedbase.embed && embedbase.content) message.channel.send({ content: embedbase.content, embeds: [embedbase.embed], components: [row] })
+        if(embedbase.embed && !embedbase.content) message.channel.send({ embeds: [embedbase.embed], components: [row] })
+        if(!embedbase.embed && embedbase.content) message.channel.send({ content: embedbase.content, components: [row] })
+        if(!embedbase.embed && !embedbase.content) return;
+      }
+    });
+  } catch (error) {
+    console.log(error)
+  }
+
+  if (!command) command = client.commands.get(client.aliases.get(cmd)) // aliases
 
   if (command) {
     let user = message.client.userSettings.get(message.author.id)
@@ -106,7 +140,6 @@ client.on('messageCreate', async message => {
       console.log(error)
       message.channel.send({ content: 'Something went wrong.' }) // If something goes wrong, log the error and error into the Channel "Something went wrong".
     }
-
 
     // Command Cooldown, cooldown: 1000 * 60 * 60 for 1h etc...
     try {

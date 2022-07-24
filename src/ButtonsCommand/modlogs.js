@@ -6,6 +6,10 @@ module.exports = {
 
         const filter = (i) => i.user.id === interaction.user.id;
 
+        if(!interaction.member.permissions.has('MANAGE_GUILD')) {
+          return interaction.channel.send(await client.translate("> You don't have permission to use this command", interaction.guild.id));
+        }
+
         const guildraw = await Guild.findOne({
             Id: interaction.guild.id,
           });
@@ -26,7 +30,7 @@ module.exports = {
 
           const collector2 = interaction.channel.createMessageCollector(filter, { time: 15000 });
 
-          interaction.channel.send("> Please enter the channel you want to use for ModLogs");
+          interaction.channel.send(await client.translate("> Please enter the channel you want to use for ModLogs", interaction.guild.id));
 
           collector2.on('collect', async (collecting) => {
             //wait for the user to enter the channel and then check if its a channel or not and save everything
@@ -37,7 +41,7 @@ module.exports = {
               //getting who made the command
               const user = await client.users.fetch(interaction.user.id);
 
-              await guildraw.save().then(() => {
+              await guildraw.save().then(async () => {
                 client.modlogs({
                   MemberTag: user.tag,
                   MemberID: user.id,
@@ -50,7 +54,7 @@ module.exports = {
                   ModeratorDisplayURL: client.user.displayAvatarURL(),
                 }, interaction)
 
-                interaction.channel.send("> Thanks for using our system, your modlog channel is in " + collecting.mentions.channels.first().name)
+                interaction.channel.send({ content: `${await client.translate(`> Thanks for using our system, your modlog channel is in ${collecting.mentions.channels.first().name}`, interaction.guild.id)}` });
 
                 collector2.stop();
               });

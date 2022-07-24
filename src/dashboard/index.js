@@ -721,6 +721,14 @@ module.exports = async client => {
     })
   })
 
+  //Embed Builder
+  app.get('/embed-builder', (req, res) => {
+    if (!req.user) req.session.backURL = '/embed-builder'
+    render(res, req, 'other/embed-builder/embed-builder.ejs', {
+      alert: null
+    })
+  })
+
   //contact post
   app.post('/contact', checkAuth, (req, res) => {
     if (contactCooldown.has(req.user.id)) {

@@ -1,5 +1,6 @@
 node_modules
 config.json
+.env
 test.js
 idea
 discord.xml

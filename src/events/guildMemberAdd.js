@@ -2,6 +2,7 @@ const client = require('../index')
 const guild = require('../database/schemas/Guild')
 const Discord = require("discord.js")
 const Canvas = require("canvas")
+const LZString = require("../dashboard/static/js/embed-builder/compression/lz-string")
 
 client.on('guildMemberAdd', async member => {
   //get the guild id for the db
@@ -9,6 +10,7 @@ client.on('guildMemberAdd', async member => {
     Id: member.guild.id
   })
 
+  if(guildraw.feature == null || !guildraw.feature) return;
   if(guildraw.feature.welcome.enable == false || !guildraw.feature.welcome.enable) return;
   //Fixing the welcome bug spam for not setting up things
   if(guildraw.feature.welcome.type == null || !guildraw.feature.welcome.type) return;
@@ -52,7 +54,7 @@ client.on('guildMemberAdd', async member => {
   } else if(guildraw.feature.welcome.type === "Message") {
     const messageraw = guildraw.feature.welcome.message
 
-    const message = messageraw.replace('{MentionJoined}', `<@${member.id}>`).replace('{FullNameJoined}', `${member.user.username}#${member.user.discriminator}`).replace('{UsernameJoined}', `${member.user.username}`).replace('{JoinedID}', `${member.id}`)
+    const message = messageraw.replace('{MentionJoined}', `<@${member.id}>`).replace('{FullNameJoined}', `${member.user.username}#${member.user.discriminator}`).replace('{UsernameJoined}', `${member.user.username}`).replace('{JoinedID}', `${member.id}`).replace('{TotalMembers}', `${member.guild.memberCount}`).replace('{GuildName}', `${member.guild.name}`)
 
     //get the channel id from the db
     const channelraw = guildraw.feature.welcome.channel
@@ -65,21 +67,28 @@ client.on('guildMemberAdd', async member => {
 
     const messageraw = guildraw.feature.welcome.message
 
+    const rawembedbase = LZString.decompressFromEncodedURIComponent(unescape(messageraw))
 
-    const description = messageraw.replace('{MentionJoined}', `<@${member.id}>`).replace('{FullNameJoined}', `${member.user.username}#${member.user.discriminator}`).replace('{UsernameJoined}', `${member.user.username}`).replace('{JoinedID}', `${member.id}`)
+    //change inside the rawembedbase the descrption
+    const embedbase = JSON.parse(rawembedbase)
+    if(embedbase.embed) embedbase.embed.description = embedbase.embed.description.replace('{MentionJoined}', `<@${member.id}>`).replace('{FullNameJoined}', `${member.user.username}#${member.user.discriminator}`).replace('{UsernameJoined}', `${member.user.username}`).replace('{JoinedID}', `${member.id}`).replace('{TotalMember}', `${member.guild.memberCount}`).replace('{GuildName}', `${member.guild.name}`)
+    if(embedbase.content) embedbase.content = embedbase.content.replace('{MentionJoined}', `<@${member.id}>`).replace('{FullNameJoined}', `${member.user.username}#${member.user.discriminator}`).replace('{UsernameJoined}', `${member.user.username}`).replace('{JoinedID}', `${member.id}`).replace('{TotalMember}', `${member.guild.memberCount}`).replace('{GuildName}', `${member.guild.name}`)
 
-    const embed = new Discord.MessageEmbed()
-      .setTitle(`Welcome to ${member.guild.name}`)
-      .setColor('PURPLE')
-      .setDescription(description)
-      .setThumbnail(`${member.guild.iconURL({ dynamic: true, size: 512 }) || "https://cdn.discordapp.com/embed/avatars/0.png"} `)
-      .setTimestamp()
+    const channelraw = guildraw.feature.welcome.channel
+    const channel = member.guild.channels.cache.get(channelraw)
 
-      const channelraw = guildraw.feature.welcome.channel
-      const channel = member.guild.channels.cache.get(channelraw)
+    /*
+    Debbuging stuff remove the brackets and you will see the raw stuff lol
+    //log the embed inside the rawembed as jsonData
+    console.log(embedbase)
+    //get the embed inside the rawembed as embed
+    console.log(embedbase.embed)
+    */
 
-      channel.send({ embeds: [embed] })
-
+    if(embedbase.embed && embedbase.content) channel.send({ content: embedbase.content, embeds: [embedbase.embed] })
+    if(embedbase.embed && !embedbase.content) channel.send({ embeds: [embedbase.embed] })
+    if(!embedbase.embed && embedbase.content) channel.send({ content: embedbase.content })
+    if(!embedbase.embed && !embedbase.content) return;
   }
   
 })

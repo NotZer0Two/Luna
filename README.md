@@ -60,4 +60,10 @@ If you would see more of unique Projects like these, help us with starring the R
 
   Contributors: 
   - [NotZer0Two](https://github.com/NotZer0Two)
+  - [vKxni](https://github.com/vKxni)
+
+## Code similar to X
+
+I decided 3 month ago to fork an old bot that the same owner don't update anymore and gaved him new life
+and the original bot was [Cody](https://github.com/vKxni/Cody) with a different purpose i remade some of the handler to be working on new version and added new thing
 

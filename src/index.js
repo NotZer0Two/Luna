@@ -68,6 +68,26 @@ client.modlogs = async function({ MemberTag, MemberID, MemberDisplayURL, Action,
   }
 }
 
+client.translate = async function(message, guildid) {
+  const guildraw = await Guild.findOne({
+      Id: guildid
+  });
+
+  if(!guildraw) return message;
+  if(!guildraw.feature.Language) return message;
+
+  if(guildraw.feature.Language === "en") return message;
+  const fetch = require("node-fetch");
+  const cheerio = require("cheerio");
+
+  const body = await fetch(`https://translate.google.com/m?sl=auto&tl=${guildraw.feature.Language}&hl=en-US&q=${encodeURI(message)}`).then((res) => res.text()).then((html) => cheerio.load(html));
+
+  if (!body) return `I could'nt find that languages, maybe try something that really exists.`;
+  const content = body("div.result-container").text();
+
+  return content
+}
+
 // load the Command and Handlers for the Bot, commands not in these paths, won't work.
 client.categories = fs.readdirSync(path.resolve('src/commands'))
 ;['command'].forEach(handler => {

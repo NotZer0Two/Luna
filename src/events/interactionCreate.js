@@ -8,6 +8,7 @@ const {
   MessageAttachment,
 } = require('discord.js');
 const User = require('../database/schemas/User');
+const GuildDB = require("../database/schemas/Guild");
 const Canvas = require('canvas');
 const { createTranscript } = require("discord-html-transcripts")
 const {loadbuttons} = require("../helpers/loadbuttons");
@@ -219,6 +220,94 @@ setTimeout(() => {
   }
 
     if (interaction.isModalSubmit()) {
+
+      const rcc = interaction.fields.getTextInputValue('rcc-name');
+      if(rcc) {
+        const guildraw = await GuildDB.findOne({
+          Id: interaction.guild.id,
+        });
+
+        /*guildraw.feature.customcommand.foreach(async element => {
+          if(element.Id == rcc) {
+            //remove the element from the array
+            
+            guildraw.feature.customcommand.splice(guildraw.feature.customcommand.indexOf(element), 1);
+            //save the array
+            return guildraw.save().then(uwu => {
+              interaction.reply({
+                content: `Custom command Removed!`,
+                ephemeral: true,
+              });
+            })
+
+          } else {
+            return await interaction.reply({
+              content: `Cannot find the id gave`,
+              ephemeral: true,
+            });
+          }*/
+
+          //check each id and remove the one that matches and if cannot find the id reply with Cannot find the id gave
+          for(let i = 0; i < guildraw.feature.customcommand.length; i++) {
+            if(guildraw.feature.customcommand[i].Id == rcc) {
+              guildraw.feature.customcommand.splice(i, 1);
+              return guildraw.save().then(uwu => {
+                interaction.reply({
+                  content: `Custom command Removed!`,
+                  ephemeral: true,
+                });
+              }
+              )
+            } else {
+              return await interaction.reply({
+                content: `Cannot find the id gave`,
+                ephemeral: true,
+              });
+            }
+          }
+      }
+
+
+      const cc = interaction.fields.getTextInputValue('cc-name');
+      if(cc) {
+        //check if the cc is a command on the bot
+        if(client.commands.has(cc)) {
+          return await interaction.reply({
+            content: `The command already exist on the bot please use another one`,
+            ephemeral: true,
+          });
+        }
+
+        const guildraw = await GuildDB.findOne({
+          Id: interaction.guild.id,
+        });
+
+        if(!guildraw) return;
+
+        const text = interaction.fields.getTextInputValue('cc-text');
+
+        //generate 4 random character and number
+        const code = Math.random().toString(36).substring(2, 8);
+
+
+        //add a new customcommand on guildraw.feature.customcommand
+        const newCustomCommand = {
+          Id: "cc-" + code,
+          Name: cc,
+          Text: text,
+          Creator: interaction.user.tag,
+        }
+
+        guildraw.feature.customcommand.push(newCustomCommand)
+        
+        return guildraw.save().then(uwu => {
+          interaction.reply({
+            content: `Custom Command added!`,
+            ephemeral: true,
+          });
+        })
+      }
+
 
       const input = interaction.fields.getTextInputValue('wordleWord');
       if (input) {

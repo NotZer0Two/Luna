@@ -54,15 +54,15 @@ module.exports = {
 
     if (!guildraw) {
       return message.channel.send(
-        "❌ I can't find your Guild in my Database! trying using another command will fix the issues!",
+        await client.translate("❌ I can't find your Guild in my Database! trying using another command will fix the issues!", message.guild.id),
       );
     }
 
     const embed = new Discord.MessageEmbed()
-      .setTitle('📬 Setup Moderation Commands')
+      .setTitle(await client.translate('📬 Setup Moderation Commands', message.guild.id))
       .setColor('#a1131d')
-      .setDescription(`Welcome to the Setup Command!`)
-      .setFooter(`Requested by ${message.author.tag}`)
+      .setDescription(await client.translate(`Welcome to the Setup Command!`, message.guild.id))
+      .setFooter(await client.translate(`Requested by ${message.author.tag}`, message.guild.id))
       .setTimestamp();
 
     const row = new Discord.MessageActionRow().addComponents(
@@ -89,14 +89,35 @@ module.exports = {
 
       new Discord.MessageButton()
         .setCustomId('welcome')
-        .setLabel('Welcome')
+        .setLabel(await client.translate('Welcome', message.guild.id))
         //check if the automod is enabled or not and set the color
         .setStyle(guildraw.feature.welcome.enable ? 'SUCCESS' : 'DANGER')
         .setEmoji('🎉'),
+      
+      new Discord.MessageButton()
+        .setCustomId('language')
+        .setLabel(await client.translate('Language', message.guild.id))
+        //check if the automod is enabled or not and set the color
+        .setStyle("SECONDARY")
+        .setEmoji('🗣️'),
     );
 
-    const filter = (i) => i.user.id === message.author.id;
+    const row2 = new Discord.MessageActionRow().addComponents(
+      new Discord.MessageButton()
+      .setCustomId('customcommand')
+      .setLabel(await client.translate('Custom command', message.guild.id))
+      //check if the automod is enabled or not and set the color
+      .setStyle("SECONDARY")
+      .setEmoji('📝'),
 
-    let displaymessage = await message.channel.send({ embeds: [embed], components: [row] });
+      new Discord.MessageButton()
+      .setCustomId('lcustomcommand')
+      .setLabel(await client.translate('Custom command List', message.guild.id))
+      //check if the automod is enabled or not and set the color
+      .setStyle("SECONDARY")
+      .setEmoji('📝'),
+    )
+
+    let displaymessage = await message.channel.send({ embeds: [embed], components: [row, row2] });
   },
 }
