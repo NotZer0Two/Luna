@@ -39,7 +39,8 @@ body:
     id: codesample
     attributes:
       label: Code sample
-      description: | Include the part of the error and section of the code
+      description: | 
+        Include the part of the error and section of the code
         
         Tip: the code is already formatted
       render: typescript
