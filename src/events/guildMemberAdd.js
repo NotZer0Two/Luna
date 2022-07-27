@@ -10,6 +10,7 @@ client.on('guildMemberAdd', async member => {
     Id: member.guild.id
   })
 
+  if(!guildraw) return;
   if(guildraw.feature == null || !guildraw.feature) return;
   if(guildraw.feature.welcome.enable == false || !guildraw.feature.welcome.enable) return;
   //Fixing the welcome bug spam for not setting up things
