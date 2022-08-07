@@ -84,7 +84,7 @@ module.exports = {
         labels: ['This Month', 'This Year', 'All Time'],
         datasets: [
           {
-            label: 'Joined Users',
+            label: await client.translate('Joined Users', message.guild.id),
             data: [joinedThisMonth, joinedThisYear, joinedAllTime],
             backgroundColor: '#00ff00',
             borderColor: '#00ff00',
@@ -92,7 +92,7 @@ module.exports = {
             borderWidth: 1
           },
           {
-            label: 'Joined Bot',
+            label: await client.translate('Joined Bot', message.guild.id),
             data: [botThisMonth, botThisYear, botAllTime],
             backgroundColor: '#831791',
             borderColor: '#831791',
@@ -106,13 +106,13 @@ module.exports = {
 
     //create the embed
     const embed = new MessageEmbed()
-      .setTitle('Server Statistics')
+      .setTitle(await client.translate('Server Statistics', message.guild.id))
       .setColor('RANDOM')
-      .setDescription(`
+      .setDescription(await client.translate(`
       **Joined This Month:** ${joinedThisMonth + botThisMonth} | Users Percentage (${joinedThisMonthPercentage.toFixed(2)}%)
       **Joined This Year:** ${joinedThisYear} | Users Percentage (${joinedThisYearPercentage.toFixed(2)}%)
       **Joined All Time:** ${joinedAllTime} | Users Percentage (${joinedAllTimePercentage.toFixed(2)}%)
-      `)
+      `, message.guild.id))
       .setImage("attachment://welcome.png")
 
       const chart = new MessageAttachment(await chartJSNodeCanvas.renderToBuffer(config), `welcome.png`)

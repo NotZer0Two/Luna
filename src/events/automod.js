@@ -37,7 +37,7 @@ client.on("messageCreate", async message => {
                 if(err) return;
                 if(response.data.attributeScores.TOXICITY.summaryScore.value >= guildraw.feature.Automod_score){
                     message.delete()
-                    message.channel.send(`> **Please do not use toxic language >w< <@${message.author.id}>**`);
+                    message.channel.send(await client.translate(`> **Please do not use toxic language >w< <@${message.author.id}>**`, message.guild.id));
                     
                     if(guildraw.feature.Modlogs.enable == true) {
 
@@ -45,9 +45,9 @@ client.on("messageCreate", async message => {
                         MemberTag: message.author.tag,
                         MemberID: message.author.id,
                         MemberDisplayURL: message.author.displayAvatarURL(),
-                        Action: 'Removed Message',
+                        Action: await client.translate('Removed Message', message.guild.id),
                         Color: "RED",
-                        Reason: `Toxic Language \`\`\`Phrase: ${message.content}, Toxic Score: ${response.data.attributeScores.TOXICITY.summaryScore.value}, Possible Language: ${response.data.detectedLanguages}\`\`\`` ,
+                        Reason: await client.translate(`Toxic Language \`\`\`Phrase: ${message.content}, Toxic Score: ${response.data.attributeScores.TOXICITY.summaryScore.value}, Possible Language: ${response.data.detectedLanguages}\`\`\``, message.guild.id),
                         ModeratorTag: client.user.tag,
                         ModeratorID: client.user.id,
                         ModeratorDisplayURL: client.user.displayAvatarURL(),

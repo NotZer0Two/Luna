@@ -46,7 +46,7 @@ module.exports = {
       })
 
       if(!userProfile || userProfile.economy.wallet == null) {
-        return message.channel.send({ content: `
+        return message.channel.send({ content: await client.translate(`
         ❌ You don't have a wallet!
   
         **You need to do this steps to have one:**
@@ -55,29 +55,29 @@ module.exports = {
   
         ⚠️ Please create the wallet and re-run the Command!
     
-        `})
+        `, message.guild.id)})
 
     } else if (userProfile.economy.bank !== null ) {
-      return message.channel.send({ content: `
+      return message.channel.send({ content: await client.translate(`
       ❌ You have already a bank account inside Cosmos Bank!
 
       **You have registred already your account**
-      `})
+      `, message.guild.id)})
     } else if (userProfile.economy.wallet < 500)  {
-      return message.channel.send({ content: `
+      return message.channel.send({ content: await client.translate(`
       ❌ You don't have enought money to get a Bank Account!
 
       **You need to have at least 500 coins get a Bank Account!**
-      `})
+      `, message.guild.id)})
     }
 
     userProfile.economy.wallet = userProfile.economy.wallet - 500;
     userProfile.economy.bank = 500;
     
-    message.channel.send(`✔️ **${message.author.tag}**, Registered to a bank! The **500** fee was transferred to your bank. To check your balance, type \`${client.prefix}balance\``)
+    message.channel.send(await client.translate(`✔️ **${message.author.tag}**, Registered to a bank! The **500** fee was transferred to your bank. To check your balance, type \`${client.prefix}balance\``, message.guild.id))
     if(user && user.isPremium) {
       userProfile.economy.wallet = userProfile.economy.wallet + 500;
-      message.channel.send({ content: `Thanks for be a Premium Member! You got your 500 coins back and your Welcome Money!`})
+      message.channel.send({ content: await client.translate(`Thanks for be a Premium Member! You got your 500 coins back and your Welcome Money!`, message.guild.id)})
     }
 
     return userProfile.save()

@@ -185,6 +185,30 @@
                 </div>
                 <div id="prefix-counter" style="text-align: right">0 / 5</div>
 
+                <div style="padding-bottom: 3%"></div>
+                <span
+                  >Language
+                  <i
+                    id="language-hover"
+                    style="color: white"
+                    class="fas fa-info-circle pointer"
+                  ></i
+                ></span>
+                <div class="dsc">Set the language (https://gist.github.com/piraveen/fafd0d984b2236e809d03a0e306c8a4d)</div>
+                <div class="input">
+                  <input
+                    class="width-100 mb-1 default-border"
+                    placeholder="language"
+                    maxlength="5"
+                    id="language"
+                    onkeyup="var len = this.value.length; if(len > 5) this.value.slice(0, 5); else $('#language-counter').text(`${this.value.length}/5`)"
+                    type="text"
+                    name="language"
+                    value="<%=settings.feature.Language%>"
+                  />
+                </div>
+                <div id="language-counter" style="text-align: right">0 / 5</div>
+
                 <button class="button edit">Save</button>
               </div>
             </div>
@@ -220,6 +244,27 @@
     </li>
     <li>Nicknames can be up to 32 characters long.</li>
     <li>The nickname is defaultly the bot username.</li>
+  </ul>
+</div>
+`,
+        zIndex: 9999,
+        maxWidth: 500,
+        interactiveBorder: 30,
+        duration: [500, 200],
+        animation: 'fade',
+        allowHTML: true,
+        moveTransition: 'transform 0.2s ease-out'
+      })
+
+      tippy('#language-hover', {
+        content: `<div class="tooltip-div">
+          <h3>The language provided</h3>
+  <ul>
+    <li>
+      You can only set a nickname every 10 seconds.
+    </li>
+    <li>Language can be up to 5 characters long.</li>
+    <li>The default is english on the link up of this message.</li>
   </ul>
 </div>
 `,

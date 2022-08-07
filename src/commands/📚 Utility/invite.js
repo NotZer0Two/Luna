@@ -32,9 +32,9 @@ module.exports = {
     }
     message.channel.send({
       embeds: [new Discord.MessageEmbed()
-        .setTitle('Invite Luna')
+        .setTitle(await client.translate('Invite Luna', message.guild.id))
         .setColor('GREEN')
-        .setFooter(`Thanks ${message.author.username} for supporting your favorite goddess!`)
+        .setFooter(await client.translate(`Thanks ${message.author.username} for supporting your favorite goddess!`, message.guild.id))
         .setTimestamp()
         .setDescription(
           '[Click this to invite me](https://discord.com/oauth2/authorize?client_id=673952206663319563&scope=bot&permissions=388160)',

@@ -47,7 +47,8 @@ module.exports = {
         Id: message.author.id,
       })
 
-      const pages = new Pages(_.chunk(userProfile.inventory, 25).map((chunk, i, o) => {
+
+      const pages = new Pages(_.chunk(userProfile.profile.inventory, 25).map(async (chunk, i, o) => {
         return new MessageEmbed()
         .setColor('GREY')
         .setFooter(`Visit us at • ${process.env.DOMAIN}`)
@@ -55,7 +56,7 @@ module.exports = {
           message.author.displayAvatarURL({ dynamic: true, size: 1024 }),
         )
         .setTitle(`${message.author.tag}'s Inventory`)
-        .addFields(...chunk.sort((A,B) => A.id - B.id ).map(d => {
+        .addFields(...chunk.sort((A,B) => A.id - B.id ).map(async d => {
           const item = market.find(x => x.id == d.id);
           return {
             inline: true,
@@ -69,7 +70,7 @@ module.exports = {
           }
         }));
       }));
-  
+
       if (!pages.size){
         return message.channel.send(`❌ **${message.author.tag}**, your inventory is empty.`);
       };

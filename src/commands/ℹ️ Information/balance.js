@@ -66,8 +66,8 @@ module.exports = {
       userProfile.economy.streak.timestamp - Date.now() > 0;
 
     function streak(cur, max) {
-      const active = '<:Active:975326728962601001>',
-        inactive = '<:Inactive:975326731235893248>',
+      const active = '<:ACTIVE:975326728962601001>',
+        inactive = '<:INACTIVE:975326731235893248>',
         left = max - cur === 10 ? 0 : max - cur;
       if (left === 0) {
         return dailyUsed ? active.repeat(10) : inactive.repeat(10);
@@ -80,21 +80,21 @@ module.exports = {
       embeds: [
         new Discord.MessageEmbed()
           .setColor('GREEN')
-          .setTitle('Your Balance')
+          .setTitle(await client.translate('Your Balance', message.guild.id))
           .setTimestamp()
           .setFooter(
             'lunabot.ml',
             message.author.displayAvatarURL({ dynamic: true }),
           )
           .setDescription(
-            `\u200b\n💰 **${commatize(
+            await client.translate(`\u200b\n💰 **${commatize(
               userProfile.economy.wallet,
             )}** credits in wallet.\n\n${
               userProfile.economy.bank !== null
                 ? `💰 **${commatize(
                     userProfile.economy.bank,
                   )}** credits in bank.`
-                : `Seems like you don't have a bank yet.\nCreate one now by typing \`luna bank\``
+                : `Seems like you don't have a bank yet.\nCreate one now by typing \`` + `luna bank`+ `\``
             }\n\n━━━━━━━━━━━━━━\nDaily Streak: **${
               userProfile.economy.streak.current
             }** (All time best: **${userProfile.economy.streak.alltime}**)\n**${
@@ -106,7 +106,7 @@ module.exports = {
               dailyUsed
                 ? '\\✔️ Daily reward already **claimed**!'
                 : `\\⚠️ Daily reward is **avaliable**!`
-            }`,
+            }`, message.guild.id),
           ),
       ],
     });

@@ -515,6 +515,19 @@ module.exports = async client => {
       return res.send('Something seems wrong. Try again later')
     }
 
+    if(data.language) {
+        if(settings.feature.Language.lenght > 5) {
+          render(res, req, 'dashboard/dashboard/settings/settings.ejs', {
+            guild: guild,
+            settings: settings,
+            alert: 'Language too long check https://gist.github.com/piraveen/fafd0d984b2236e809d03a0e306c8a4d'
+          })
+          return
+        } else {
+          settings.feature.Language = data.language
+        }
+    }
+
     // Save the Guild Settings <Prefix, Blocks, Nickname>
     const newSettings = await settings.save({ new: true })
     client.guildSettings.set(guild.id, newSettings)

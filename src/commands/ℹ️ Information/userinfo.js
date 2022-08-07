@@ -116,16 +116,8 @@ module.exports = {
           mentionedUser.user && mentionedUser.user.createdAt
             ? mentionedUser.user.createdAt
             : mentionedUser.createdAt,
-        ).format('MMMM Do YYYY, h:mm:ss a')}\`\n\n**Enrolled At:** \`${
-          userDatabase.enrolled
-            ? moment(userDatabase.enrolled).format('MMMM Do YYYY, h:mm:ss a')
-            : 'Not Enrolled'
-        }\`\n**Premium:** ${premiumstatus}\n**Courses:** \`${
-          userDatabase.courses.length
-            ? userDatabase.courses.map(c => UpperCase(c.name)).join(' - ')
-            : 'None'
-        }\`\n**Level:** \`${level}\`\n**XP:** \`${userDatabase.xp ||
-          0}\`\n\nBy the way, you have a new Message in your Inbox!\nType \`<prefix> inbox\` to see it!`,
+        ).format('MMMM Do YYYY, h:mm:ss a')}\`\n**Premium:** ${premiumstatus}
+        \n\nBy the way, you have a new Message in your Inbox!\nType \`luna inbox\` to see it!`,
       )
 
     return message.channel.send({ embeds: [embed] })

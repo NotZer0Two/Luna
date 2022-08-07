@@ -43,61 +43,81 @@ client.guildSettings = new Collection()
 client.buttonCommands = new Collection();
 client.userSettings = new Collection()
 client.stafflogs = new WebhookClient({ url: process.env.STAFFERLOGS });
-client.modlogs = async function({ MemberTag, MemberID, MemberDisplayURL, Action, Color, Reason, ModeratorTag, ModeratorID, ModeratorDisplayURL, Attachments}, interaction) {
-  const data = await Guild.findOne({ Id: interaction.guild.id }); 
-  if(!data) return;
-  if(!data.feature.Modlogs.channel || data.feature.Modlogs.enable === false) return;
- 
+client.modlogs = async function ({ MemberTag, MemberID, MemberDisplayURL, Action, Color, Reason, ModeratorTag, ModeratorID, ModeratorDisplayURL, Attachments }, interaction) {
+  const data = await Guild.findOne({ Id: interaction.guild.id });
+  if (!data) return;
+  if (!data.feature.Modlogs.channel || data.feature.Modlogs.enable === false) return;
+
   const channel = interaction.guild.channels.cache.get(data.feature.Modlogs.channel);
 
   const logsembed = new MessageEmbed()
-  .setColor(Color)
-  .setDescription(`**Member**: \`${MemberTag}\` (${MemberID}) 
+    .setColor(Color)
+    .setDescription(`**Member**: \`${MemberTag}\` (${MemberID}) 
   **Action**: ${Action}
-  **Reason**: ${Reason}`) 
-  .setThumbnail(MemberDisplayURL)
-  .setAuthor({name: `${ModeratorTag} (${ModeratorID})`, iconURL: `${ModeratorDisplayURL}`})
-  .setTimestamp()
+  **Reason**: ${Reason}`)
+    .setThumbnail(MemberDisplayURL)
+    .setAuthor({ name: `${ModeratorTag} (${ModeratorID})`, iconURL: `${ModeratorDisplayURL}` })
+    .setTimestamp()
 
 
   //check if attachment is empty or not
-  if(Attachments) {
+  if (Attachments) {
     const display = await channel.send({ embeds: [logsembed], files: [Attachments] }).catch(err => console.log(err));
   } else {
     const display = await channel.send({ embeds: [logsembed] }).catch(err => console.log(err));
   }
 }
 
-client.translate = async function(message, guildid) {
+client.translate = async function (message, guildid) {
   const guildraw = await Guild.findOne({
-      Id: guildid
+    Id: guildid
   });
 
-  if(!guildraw) return message;
-  if(!guildraw.feature.Language) return message;
+  if (!guildraw) return message;
+  if (!guildraw.feature.Language) return message;
 
-  if(guildraw.feature.Language === "en") return message;
-  const fetch = require("node-fetch");
-  const cheerio = require("cheerio");
+  if (guildraw.feature.Language === "en") return message;
+  let _message = [],
+    emoji = [];
 
-  const body = await fetch(`https://translate.google.com/m?sl=auto&tl=${guildraw.feature.Language}&hl=en-US&q=${encodeURI(message)}`).then((res) => res.text()).then((html) => cheerio.load(html));
+    const fetch = require("node-fetch");
+    const cheerio = require("cheerio");
 
-  if (!body) return `I could'nt find that languages, maybe try something that really exists.`;
-  const content = body("div.result-container").text();
+  for (const content of message?.split(" ") ?? []) {
+    if (/a?:\w{2,32}:\d{17,20}/.test(content)) {
+      emoji.push(content);
+      _message.push(`{:{${emoji.length}}:}`);
+    } else _message.push(content);
+  }
 
-  return content
+  const body = await fetch(`https://translate.google.com/m?sl=auto&tl=${guildraw.feature.Language}&hl=en-US&q=${encodeURI(_message.join(" "))}`)
+    .then((res) => res.text())
+    .then((html) => cheerio.load(html));
+
+  if (!body) message = `I couldn't find that languages, maybe try something that really exists.`;
+  message = body("div.result-container").text();
+
+  _message = [];
+  let i = 0;
+  for (const content of message.split(" ")) {
+    if (/{:{\d}:}/.test(content)) {
+      _message.push(emoji[i++]);
+    } else _message.push(content);
+  }
+
+  return _message.join(" ");
 }
 
 // load the Command and Handlers for the Bot, commands not in these paths, won't work.
 client.categories = fs.readdirSync(path.resolve('src/commands'))
-;['command'].forEach(handler => {
-  require(path.resolve(`src/handlers/${handler}`))(client)
-})
+  ;['command'].forEach(handler => {
+    require(path.resolve(`src/handlers/${handler}`))(client)
+  })
 
-//Same as the upper one
-;['buttons'].forEach(handler => {
-  require(path.resolve(`src/handlers/${handler}`))(client)
-})
+  //Same as the upper one
+  ;['buttons'].forEach(handler => {
+    require(path.resolve(`src/handlers/${handler}`))(client)
+  })
 
 // Init the Database and login the Bot
 mongoose.init()

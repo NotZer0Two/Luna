@@ -25,9 +25,9 @@ module.exports = {
 
 
     if(!userProfile.economy.isPrisoner) {
-      return message.channel.send({ content: `
+      return message.channel.send({ content: await client.translate(`
     ❌ You are not in prison!
-    `})
+    `, message.guild.id)})
     }
 
     if (!message.guild.me.permissions.has('SEND_MESSAGES')) return
@@ -130,34 +130,34 @@ module.exports = {
 
     //create and embed
     const embed = new MessageEmbed()
-      .setTitle('Prison Escape')
-      .setDescription(`
+      .setTitle(await client.translate('Prison Escape', message.guild.id))
+      .setDescription(await client.translate(`
       You are currently **Spawning**
-        `)
-      .setFooter('Escape from the prison')
+        `, message.guild.id))
+      .setFooter(await client.translate('Escape from the prison', message.guild.id))
       .setImage(`attachment://welcome.png`);
 
       const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
 					.setCustomId('down')
-					.setLabel('Down')
+					.setLabel(await client.translate('Down', message.guild.id))
 					.setStyle('SUCCESS'),
         new MessageButton()
 					.setCustomId('left')
-					.setLabel('Left')
+					.setLabel(await client.translate('Left', message.guild.id))
 					.setStyle('SUCCESS'),
         new MessageButton()
 					.setCustomId('right')
-					.setLabel('Right')
+					.setLabel(await client.translate('Right', message.guild.id))
 					.setStyle('SUCCESS'),
         new MessageButton()
 					.setCustomId('up')
-					.setLabel('Up')
+					.setLabel(await client.translate('Up', message.guild.id))
 					.setStyle('SUCCESS'),
         new MessageButton()
           .setCustomId('quit')
-          .setLabel('Quit')
+          .setLabel(await client.translate('Quit', message.guild.id))
           .setStyle('DANGER'),
 			);
 
@@ -175,15 +175,11 @@ module.exports = {
         x = map[Math.floor(Math.random() * map.length)][0]
         y = map[Math.floor(Math.random() * map.length)][1]
 
-        console.log("Fixed")
       }
 
       if(y >= 14 || x >= 14 || x <= -1 || y <= -1) {
         return
       }
-
-      console.log(x, y)
-      console.log("Check " , x == NaN || y == undefined || x == undefined || y == NaN)
 
       if(walls.some(([wallsX, wallsY]) => wallsX === x && wallsY === y)) {
         if(x === xe && y === ye) {

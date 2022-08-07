@@ -47,6 +47,18 @@ module.exports = {
         Id: message.author.id,
       })
 
+      if(!userProfile || userProfile.economy.wallet == null) {
+        return message.channel.send({ content: await client.translate(`
+        ❌ You don't have a wallet!
+  
+        **You need to do this steps to have one:**
+        1. Type \`luna register\`
+        2. Then your done!
+  
+        ⚠️ Please create the wallet and re-run the Command!
+    
+        `, message.guild.id)})
+      }
 
       const id = args[0];
       let amt = args[1];
@@ -54,9 +66,9 @@ module.exports = {
 
       if (!item){
         return message.channel.send([
-          `❌ **${message.author.tag}**, Could not find the item ${id ? `with id **${id}**` : `without id`}!`,
-          `The proper usage for this command would be \`${client.prefix}buy [item id] <amount>\`.`,
-          `Example: \`${client.prefix}buy ${Math.floor(Math.random() * market.length)}\``
+          await client.translate(`❌ **${message.author.tag}**, Could not find the item ${id ? `with id **${id}**` : `without id`}!`, message.guild.id),
+          await client.translate(`The proper usage for this command would be \`${client.prefix}buy [item id] <amount>\`.`, message.guild.id),
+          await client.translate(`Example: \`${client.prefix}buy ${Math.floor(Math.random() * market.length)}\``, message.guild.id)
         ].join('\n'));
       };
 

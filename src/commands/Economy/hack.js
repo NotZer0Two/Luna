@@ -45,9 +45,9 @@ module.exports = {
 
     if (!args[0])
       return message.channel.send({
-        content: `
+        content: await client.translate(`
     ❌ You need to specify a server to hack!
-    `,
+    `, message.guild.id),
       });
 
     let id = args[0];
@@ -63,7 +63,7 @@ module.exports = {
 
     if (!userProfile || userProfile.economy.wallet == null) {
       return message.channel.send({
-        content: `
+        content: await client.translate(`
         ❌ You don't have a wallet!
   
         **You need to do this steps to have one:**
@@ -72,19 +72,19 @@ module.exports = {
   
         ⚠️ Please create the wallet and re-run the Command!
     
-        `,
+        `, message.guild.id),
       });
     }
 
     if(guildraw.ServerWar.offline == true) {
       return message.channel.send({
-        content: `
+        content: await client.translate(`
         ❌ This server is offline, you can't attack a server already offline try again later!
-        `,
+        `, message.guild.id),
       });
     }
 
-    if(id == message.guild.id) return message.channel.send({ content: `❌ You can't DDOS your own server` })
+    if(id == message.guild.id) return message.channel.send({ content: await client.translate(`❌ You can't DDOS your own server`, message.guild.id) })
 
     const serverLevel = guildraw.ServerWar.Server.ServerVersion;
 
@@ -95,7 +95,7 @@ module.exports = {
     //check if the id exist
     if (!guildraw) {
       return message.channel.send(
-        `\\❌ **${message.author.tag}**, this server is not registered!`,
+        await client.translate(`\\❌ **${message.author.tag}**, this server is not registered!`, message.guild.id),
       );
     }
 
@@ -104,9 +104,9 @@ module.exports = {
 
     if (UserLevel < serverLevel) {
       return message.channel.send({
-        content: `
+        content: await client.translate(`
         ❌ You need to be at least ${serverLevel} to hack this server!
-      `,
+      `, message.guild.id),
       });
     }
 
@@ -117,18 +117,18 @@ module.exports = {
     TotalPower += UserLevel;
 
     const embed = new Discord.MessageEmbed()
-      .setTitle('📬 War Event STARTED')
+      .setTitle(await client.translate('📬 War Event STARTED', message.guild.id))
       .setColor('#a1131d')
       .setDescription(
-        `Hack event to ${ServerHack} Currently we have ${TotalPower}`,
+        await client.translate(`Hack event to ${ServerHack} Currently we have ${TotalPower}`, message.guild.id),
       )
-      .setFooter(`Requested by ${message.author.tag}`)
+      .setFooter(await client.translate(`Requested by ${message.author.tag}`, message.guild.id))
       .setTimestamp();
 
     const row = new Discord.MessageActionRow().addComponents(
       new Discord.MessageButton()
         .setCustomId('accept')
-        .setLabel('Accept')
+        .setLabel(await client.translate('Accept', message.guild.id))
         //check if the automod is enabled or not and set the color
         .setStyle('DANGER')
         .setEmoji('⌨️'),
@@ -149,17 +149,17 @@ module.exports = {
 
         if (IDS.includes(button.user.id))
           return message.channel.send({
-            content: `❌ You are already on the WAR`,
+            content: await client.translate(`❌ You are already on the WAR`, message.guild.id),
           });
 
         if (!UserWar)
           return message.channel.send({
-            content: `❌ You don't have an account you can't join the war!`,
+            content: await client.translate(`❌ You don't have an account you can't join the war!`, message.guild.id),
           });
 
         if (UserWar.economy.wallet == null)
           return message.channel.send({
-            content: `❌ You don't have a wallet!`,
+            content: await client.translate(`❌ You don't have a wallet!`, message.guild.id),
           });
 
         let HackerLevel = UserWar.profile.HackerLevel;
@@ -168,7 +168,7 @@ module.exports = {
         TotalPower += HackerLevel;
         
         embed.setDescription(
-          `Hack event to ${ServerHack} Currently we have ${TotalPower}`,
+          await client.translate(`Hack event to ${ServerHack} Currently we have ${TotalPower}`, message.guild.id),
         )
 
         display.edit({ embeds: [embed], components: [row] })
@@ -178,18 +178,18 @@ module.exports = {
 
         try {
           message.author.send({
-            content: `
+            content: await client.translate(`
             **You have accepted the challenge**
             > Total Power currently is: ${TotalPower}
             > Total Users: ${IDS.length}
-            `,
+            `, message.guild.id),
           });
 
         } catch (e) {
           message.channel.send({
-            content: `
+            content: await client.translate(`
                 ❌ You need to enable DMs to receive the message but you joined the War!
-                `,
+                `, message.guild.id),
           });
         }
       }
@@ -198,13 +198,13 @@ module.exports = {
     collector.on('end', async (collected, reason) => {
       let totalDamage = TotalPower * 40;
       message.channel.send({
-        content: `**Join Closed**\n> Total USER: ${IDS.length}\n> Total Power: ${TotalPower}\nTotal Damage: ${totalDamage}`,
+        content: await client.translate(`**Join Closed**\n> Total USER: ${IDS.length}\n> Total Power: ${TotalPower}\nTotal Damage: ${totalDamage}`, message.guild.id),
       });
 
       guildraw.ServerWar.Server.ServerHealth -= totalDamage;
 
       if (guildraw.ServerWar.Server.ServerHealth <= 0) {
-        message.channel.send({ content: `**THE SERVER IS DOWN**` });
+        message.channel.send({ content: await client.translate(`**THE SERVER IS DOWN**`, message.guild.id) });
 
         guildraw.ServerWar.offline = true;
         if (Mask) {
@@ -236,7 +236,7 @@ module.exports = {
 
             UserWar.economy.wallet += 5000;
 
-            message.channel.send({ content: "The server didn't have a bounty but the master sold the data to a darkweb forum and you everyone gain 5k" })
+            message.channel.send({ content: await client.translate("The server didn't have a bounty but the master sold the data to a darkweb forum and you everyone gain 5k", message.guild.id) })
 
             await UserWar.save();
           }
@@ -254,7 +254,7 @@ module.exports = {
             Id: IDS[i],
           });
 
-          message.channel.send({ content: `The server had a bounty ` })
+          message.channel.send({ content: await client.translate(`The server had a bounty `, message.guild.id) })
 
           UserWar.economy.wallet += bountyPerUser;
 
@@ -265,13 +265,13 @@ module.exports = {
         await guildraw.save();
       } else {
         message.channel.send({
-          content: `**The attack wasn't succefull for the total, try again**`,
+          content: await client.translate(`**The attack wasn't succefull for the total, try again**`, message.guild.id),
         });
         //make a possibility to get arrested
         let random = Math.floor(Math.random() * 100);
         if (random <= 10) {
           message.author.send({
-            content: `> Your house was swatted and you got arrested!`,
+            content: await client.translate(`> Your house was swatted and you got arrested!`, message.guild.id),
           });
           userProfile.economy.isPrisoner = true
           await userProfile.save();

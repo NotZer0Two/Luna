@@ -46,7 +46,7 @@ module.exports = {
       })
 
       if(!userProfile || userProfile.economy.wallet == null) {
-        return message.channel.send({ content: `
+        return message.channel.send({ content: await client.translate(`
         ❌ You don't have a wallet!
   
         **You need to do this steps to have one:**
@@ -55,7 +55,7 @@ module.exports = {
   
         ⚠️ Please create the wallet and re-run the Command!
     
-        `})
+        `, message.guild.id)})
 
     }
 
@@ -70,7 +70,7 @@ module.exports = {
 
 
     if (userProfile.economy.streak.timestamp !== 0 && userProfile.economy.streak.timestamp - now > 0){
-      return message.channel.send(`❌ **${message.author.tag}**, You already got your daily reward!\nYou can get your next daily reward in ${moment.duration(userProfile.economy.streak.timestamp - now, 'milliseconds').format('H [hours,] m [minutes, and] s [seconds]')}`);
+      return message.channel.send(await client.translate(`❌ **${message.author.tag}**, You already got your daily reward!\nYou can get your next daily reward in ${moment.duration(userProfile.economy.streak.timestamp - now, 'milliseconds').format('H [hours,] m [minutes, and] s [seconds]')}`, message.guild.id));
     };
 
     if ((userProfile.economy.streak.timestamp + 864e5) < now){
@@ -113,13 +113,13 @@ module.exports = {
 
     // Include the streak state and overflow state in the confirmation message
     return userProfile.save()
-    .then(() => message.channel.send([
-      `\\✔️ **${message.author.tag}**, you got your **${commatize(amount)}** daily reward.`,
-      supporter ? `\n\\✔️ **Thank you for your patronage**: You received **${commatize(amount * 0.2)}** bonus credits for being a [supporter]!` : '',
-      itemreward ? `\n\\✔️ **You received a profile item!**: You received **x1 ${item.name} - ${item.description}** from daily rewards. It has been added to your inventory!` : '',
-      overflow ? `\n\\⚠️ **Overflow Warning**: Your wallet just overflowed! You need to transfer some of your credits to your bank!` : '',
-      Premium ? `\n\\✔️ **You are a Premium Member**: You received **${commatize(amount * 20)}** bonus credits for being a [Premium Member]!` : '',
-      streakreset ? `\n\\⚠️ **Streak Lost**: You haven't got your succeeding daily reward. Your streak is reset (x1).` : `\n**Streak x${userProfile.economy.streak.current}**`,
+    .then(async () => message.channel.send([
+      await client.translate(`\\✔️ **${message.author.tag}**, you got your **${commatize(amount)}** daily reward.`,
+      await client.translate(supporter ? `\n\\✔️ **Thank you for your patronage**: You received **${commatize(amount * 0.2)}** bonus credits for being a [supporter]!` : '', message.guild.id),
+      await client.translate(itemreward ? `\n\\✔️ **You received a profile item!**: You received **x1 ${item.name} - ${item.description}** from daily rewards. It has been added to your inventory!` : '', message.guild.id),
+      await client.translate(overflow ? `\n\\⚠️ **Overflow Warning**: Your wallet just overflowed! You need to transfer some of your credits to your bank!` : '', message.guild.id),
+      await client.translate(Premium ? `\n\\✔️ **You are a Premium Member**: You received **${commatize(amount * 20)}** bonus credits for being a [Premium Member]!` : '', message.guild.id),
+      await client.translate(streakreset ? `\n\\⚠️ **Streak Lost**: You haven't got your succeeding daily reward. Your streak is reset (x1).` : `\n**Streak x${userProfile.economy.streak.current}**`, message.guild.id)),
     ].join('')))
   },
 }

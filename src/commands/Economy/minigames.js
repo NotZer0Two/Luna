@@ -61,7 +61,7 @@ module.exports = {
     })
 
     if(!userProfile || userProfile.economy.wallet == null) {
-      return message.channel.send({ content: `
+      return message.channel.send({ content: await client.translate(`
       ❌ You don't have a wallet!
 
       **You need to do this steps to have one:**
@@ -70,7 +70,7 @@ module.exports = {
 
       ⚠️ Please create the wallet and re-run the Command!
   
-      `})
+      `, message.guild.id)})
 
   }
 

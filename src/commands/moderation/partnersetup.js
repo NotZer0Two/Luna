@@ -83,35 +83,35 @@ module.exports = {
       const embed = new Discord.MessageEmbed()
       .setTitle('📬 Setup Partner')
       .setColor('#a1131d')
-      .setDescription(`Thanks for be our partner and with this simple menu you can setup up our bump system for partner server`)
-      .setFooter(`Requested by ${message.author.tag}`)
+      .setDescription(await client.translate(`Thanks for be our partner and with this simple menu you can setup up our bump system for partner server`, message.guild.id))
+      .setFooter(await client.translate(`Requested by ${message.author.tag}`, message.guild.id))
       .setTimestamp();
 
       const row = new Discord.MessageActionRow().addComponents(
         new Discord.MessageButton()
           .setCustomId('description')
-          .setLabel('Description')
+          .setLabel(await client.translate('Description', message.guild.id))
           //check if the automod is enabled or not and set the color
           .setStyle("SUCCESS")
           .setEmoji('📝'),
 
           new Discord.MessageButton()
           .setCustomId('invite')
-          .setLabel('Invite')
+          .setLabel(await client.translate('Invite', message.guild.id))
           //check if the automod is enabled or not and set the color
           .setStyle("SUCCESS")
           .setEmoji('📝'),
 
           new Discord.MessageButton()
           .setCustomId('color')
-          .setLabel('Color')
+          .setLabel(await client.translate('Color', message.guild.id))
           //check if the automod is enabled or not and set the color
           .setStyle("SUCCESS")
           .setEmoji('🌈'),
 
           new Discord.MessageButton()
           .setCustomId('banner')
-          .setLabel('Banner')
+          .setLabel(await client.translate('Banner', message.guild.id))
           //check if the automod is enabled or not and set the color
           .setStyle("SUCCESS")
           .setEmoji('🤳'),

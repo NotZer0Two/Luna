@@ -43,13 +43,13 @@ module.exports = {
         message.author.displayAvatarURL({ dynamic: true, size: 1024 }),
       )
       .setDescription([
-        '    📝Bot Guide',
-        '•  To start you can setup the moderation with "luna setup" or starting farming on the economy.',
-        '•  After that, you can start exploring our features and see how they works.',
-        `•  By the way, you can use my dashboard [here](${process.env.DOMAIN})`,
+        await client.translate('    📝Bot Guide', message.guild.id),
+        await client.translate('•  To start you can setup the moderation with "luna setup" or starting farming on the economy.', message.guild.id),
+        await client.translate('•  After that, you can start exploring our features and see how they works.', message.guild.id),
+        await client.translate(`•  By the way, you can use my dashboard [here](${process.env.DOMAIN})`, message.guild.id),
         '',
         '',
-        'Have a good exploration 💖',
+        await client.translate('Have a good exploration 💖', message.guild.id),
       ].join("\n"))
 
     //.setTimestamp()

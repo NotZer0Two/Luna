@@ -79,7 +79,7 @@ module.exports = {
         process.env.DOMAIN,
         message.author.displayAvatarURL({ dynamic: true }),
       )
-      .setDescription(`\`\`\`diff\n${infos}\`\`\``)
+      .setDescription(await client.translate(`\`\`\`diff\n${infos}\`\`\``, message.guild.id))
 
     return message.channel.send({ embeds: [embed] })
   },
